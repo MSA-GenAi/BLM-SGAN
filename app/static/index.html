@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BLM-SGAN Studio</title>
+  <meta name="description" content="Text-to-image generation with BLM-SGAN: Bidirectional Language-Modeling for Semantic Spatial GAN.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e7c86'/%3E%3Cpath d='M7 21c4-9 11-13 18-12-3 2-4 5-4 8 0 4-3 7-8 7-3 0-5-1-6-3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" class="mark-bg"/>
+        <path d="M7 21c4-9 11-13 18-12-3 2-4 5-4 8 0 4-3 7-8 7-3 0-5-1-6-3z" class="mark-fg"/>
+        <circle cx="21.2" cy="12.4" r="1.3" class="mark-bg"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">BLM-SGAN <em>Studio</em></span>
+        <span class="brand-sub">Text-to-image generation</span>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" class="tab" id="tab-generate" aria-controls="view-generate" aria-selected="true">Generate</button>
+      <button role="tab" class="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false">Compare</button>
+      <button role="tab" class="tab" id="tab-about" aria-controls="view-about" aria-selected="false">How it works</button>
+    </nav>
+
+    <div class="topbar-right">
+      <button class="status-pill" id="statusPill" type="button" title="Model status">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">Connecting…</span>
+      </button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="sun" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/><path class="moon" d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" hidden></div>
+
+  <main>
+    <!-- ============================== GENERATE ============================== -->
+    <section class="view" id="view-generate" role="tabpanel" aria-labelledby="tab-generate">
+      <aside class="panel">
+        <form id="genForm" autocomplete="off">
+          <div class="model-field">
+            <label class="field-label" for="model">Model</label>
+            <select id="model" class="model-select"></select>
+            <span class="hint" id="modelDesc"></span>
+          </div>
+          <label class="field-label" for="caption">Describe a bird</label>
+          <div class="prompt-box">
+            <textarea id="caption" rows="4" maxlength="500" spellcheck="true"
+              placeholder="this small bird has a bright red crown, a white belly and short black wings"></textarea>
+            <div class="prompt-foot">
+              <span id="wordCount" class="mono">0 / 18 words</span>
+              <button type="button" class="link-btn" id="clearBtn">Clear</button>
+            </div>
+          </div>
+          <div class="tokens" id="tokens" aria-live="polite"></div>
+
+          <div class="examples">
+            <span class="mini-label">Try an example</span>
+            <div class="chips" id="examples"></div>
+          </div>
+
+          <div class="controls">
+            <div class="control">
+              <span class="field-label">Images</span>
+              <div class="segmented" id="countSeg" role="radiogroup" aria-label="Number of images">
+                <button type="button" role="radio" data-v="1">1</button>
+                <button type="button" role="radio" data-v="2">2</button>
+                <button type="button" role="radio" data-v="4" aria-checked="true">4</button>
+                <button type="button" role="radio" data-v="8">8</button>
+              </div>
+            </div>
+
+            <div class="control">
+              <label class="field-label" for="seed">Seed</label>
+              <div class="seed-row">
+                <input id="seed" type="number" min="0" max="2147483647" step="1" class="mono" value="0">
+                <button type="button" class="icon-btn square" id="diceBtn" title="Random seed" aria-label="Random seed">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" class="fill"/><circle cx="15.5" cy="15.5" r="1.3" class="fill"/><circle cx="15.5" cy="8.5" r="1.3" class="fill"/><circle cx="8.5" cy="15.5" r="1.3" class="fill"/><circle cx="12" cy="12" r="1.3" class="fill"/></svg>
+                </button>
+              </div>
+              <label class="check"><input type="checkbox" id="autoSeed" checked> New seed every run</label>
+            </div>
+
+            <div class="control">
+              <label class="field-label" for="scale">Noise scale <span class="mono value" id="scaleVal">1.00</span></label>
+              <input id="scale" type="range" min="0" max="1.5" step="0.05" value="1">
+              <span class="hint">Below 1 gives more typical birds, above 1 more varied ones.</span>
+            </div>
+
+            <details class="advanced">
+              <summary>Advanced</summary>
+              <span class="hint" id="modeHint"></span>
+              <label class="check"><input type="checkbox" id="saveOut" checked> Save images to outputs/</label>
+            </details>
+          </div>
+
+          <button type="submit" class="primary-btn" id="genBtn">
+            <span class="btn-label">Generate</span>
+            <kbd>Ctrl ↵</kbd>
+          </button>
+        </form>
+
+        <div class="history">
+          <div class="history-head">
+            <span class="mini-label">History</span>
+            <button type="button" class="link-btn" id="clearHistory" hidden>Clear</button>
+          </div>
+          <ol id="historyList" class="history-list"></ol>
+          <p class="hint" id="historyEmpty">Your generations from this session appear here.</p>
+        </div>
+      </aside>
+
+      <section class="stage" aria-live="polite">
+        <div class="empty" id="genEmpty">
+          <div class="empty-art" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <h2>From words to pixels</h2>
+          <p>Write a description of a bird and press <strong>Generate</strong>. Each image comes with the model’s
+            <em>semantic masks</em>, which show where the text shapes the picture at every scale from 4×4 to 256×256.</p>
+        </div>
+
+        <div id="genResult" hidden>
+          <header class="result-head">
+            <blockquote class="result-caption" id="resCaption"></blockquote>
+            <div class="result-meta" id="resMeta"></div>
+            <div class="saved-path" id="resSaved" hidden></div>
+            <div class="dropped" id="resDropped" hidden></div>
+          </header>
+          <div class="grid" id="resGrid"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================== COMPARE ============================== -->
+    <section class="view" id="view-compare" role="tabpanel" aria-labelledby="tab-compare" hidden>
+      <aside class="panel">
+        <form id="cmpForm" autocomplete="off">
+          <span class="field-label">Compare</span>
+          <div class="segmented" id="cmpBySeg" role="radiogroup" aria-label="What to compare">
+            <button type="button" role="radio" data-v="captions" aria-checked="true">Captions</button>
+            <button type="button" role="radio" data-v="models">Models</button>
+          </div>
+
+          <div id="cmpCaptionsMode">
+            <label class="field-label spaced" for="cmpModel">Model</label>
+            <select id="cmpModel" class="model-select"></select>
+            <span class="field-label spaced">Captions</span>
+            <p class="hint">Each row is one caption. Every column uses the <strong>same noise</strong>, so differences down a column come only from the text.</p>
+            <ol class="cmp-list" id="cmpList"></ol>
+            <div class="row-actions">
+              <button type="button" class="ghost-btn" id="cmpAdd">+ Add caption</button>
+              <div class="preset">
+                <label class="mini-label" for="cmpPreset">Preset</label>
+                <select id="cmpPreset">
+                  <option value="">Choose…</option>
+                  <option value="colors">Colour sweep</option>
+                  <option value="parts">Body parts</option>
+                  <option value="size">Size &amp; shape</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div id="cmpModelsMode" hidden>
+            <label class="field-label spaced" for="cmpCaption">Caption</label>
+            <textarea id="cmpCaption" class="cmp-caption" rows="3" maxlength="300">this small bird has a bright red crown and a white belly with black wings</textarea>
+            <span class="field-label spaced">Models</span>
+            <p class="hint">Each row is one model, given the same caption and the <strong>same noise</strong> per column.</p>
+            <div class="model-checks" id="cmpModels"></div>
+          </div>
+
+          <div class="controls">
+            <div class="control">
+              <span class="field-label">Samples per caption</span>
+              <div class="segmented" id="cmpCountSeg" role="radiogroup" aria-label="Samples per caption">
+                <button type="button" role="radio" data-v="1">1</button>
+                <button type="button" role="radio" data-v="2">2</button>
+                <button type="button" role="radio" data-v="3" aria-checked="true">3</button>
+                <button type="button" role="radio" data-v="4">4</button>
+              </div>
+            </div>
+            <div class="control">
+              <label class="field-label" for="cmpSeed">Seed</label>
+              <div class="seed-row">
+                <input id="cmpSeed" type="number" min="0" max="2147483647" class="mono" value="42">
+                <button type="button" class="icon-btn square" id="cmpDice" title="Random seed" aria-label="Random seed">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" class="fill"/><circle cx="15.5" cy="15.5" r="1.3" class="fill"/><circle cx="15.5" cy="8.5" r="1.3" class="fill"/><circle cx="8.5" cy="15.5" r="1.3" class="fill"/><circle cx="12" cy="12" r="1.3" class="fill"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="primary-btn" id="cmpBtn"><span class="btn-label">Compare</span><kbd>Ctrl ↵</kbd></button>
+        </form>
+      </aside>
+
+      <section class="stage" aria-live="polite">
+        <div class="empty" id="cmpEmpty">
+          <div class="empty-art cols" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <h2>Change the words, keep the noise</h2>
+          <p>Compare measures how much control the text has. Every image in a column starts from the same noise vector,
+            so any difference down a column comes from the caption alone.</p>
+        </div>
+        <div id="cmpResult" hidden>
+          <div class="result-meta" id="cmpMeta"></div>
+          <div class="cmp-table" id="cmpTable"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================== ABOUT ============================== -->
+    <section class="view about" id="view-about" role="tabpanel" aria-labelledby="tab-about" hidden>
+      <div class="about-inner">
+        <p class="eyebrow">Graduation project</p>
+        <h1>BLM-SGAN</h1>
+        <p class="lede">Bidirectional Language-Modeling for Semantic Spatial Text-to-Image Generation. A pretrained
+          bidirectional language model (BERT) encodes the description. A single-stage GAN generator then turns noise
+          into a 256×256 image, using semantic masks to decide <em>where</em> the text should change the image.</p>
+
+        <h2>Pipeline</h2>
+        <div class="pipeline" role="img" aria-label="Pipeline: caption, tokenizer, BERT, projection, generator, image">
+          <div class="pnode">
+            <span class="pk">Input</span><strong>Caption</strong>
+            <span class="ps">“a red bird with black wings”</span>
+          </div>
+          <div class="parrow" aria-hidden="true"></div>
+          <div class="pnode">
+            <span class="pk">Text</span><strong>BERT-base, uncased</strong>
+            <span class="ps">12 layers, top 2 fine-tuned · up to 40 word pieces</span>
+          </div>
+          <div class="parrow" aria-hidden="true"></div>
+          <div class="pnode">
+            <span class="pk">Sentence</span><strong>mean of token states → 256</strong>
+            <span class="ps">projection trained with DAMSM</span>
+          </div>
+          <div class="parrow" aria-hidden="true"></div>
+          <div class="pnode accent">
+            <span class="pk">Generator</span><strong>NetG · 7 G-Blocks</strong>
+            <span class="ps">4×4 → 256×256, mask-guided affine</span>
+          </div>
+          <div class="parrow" aria-hidden="true"></div>
+          <div class="pnode">
+            <span class="pk">Output</span><strong>256×256 image</strong>
+            <span class="ps">+ 7 semantic masks</span>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="card">
+            <h3>Semantic-spatial conditioning</h3>
+            <p>Noise <span class="mono">z ∈ ℝ¹⁰⁰</span> is mapped to a 4×4×512 feature map. Each G-Block upsamples
+              it 2× and applies an affine transform whose scale and shift are predicted from the sentence embedding.
+              A predicted mask <span class="mono">m ∈ [0,1]</span> gates that transform per pixel:
+              <span class="mono">γ·m + 1</span> and <span class="mono">β·m</span>. This is designed to let the text act on
+              the bird more than on the background. The mask strip in each result shows <span class="mono">m</span>.</p>
+          </div>
+          <div class="card">
+            <h3>Training setup</h3>
+            <dl class="kv">
+              <dt>Dataset</dt><dd>CUB-200-2011 birds: 8,855 training images, 10 captions each</dd>
+              <dt>Text encoder</dt><dd>BERT-DAMSM, pre-trained for 40 epochs, then frozen</dd>
+              <dt>Discriminator</dt><dd>NetD, 6 residual down-blocks, conditional logits</dd>
+              <dt>Losses</dt><dd>Hinge adversarial + mismatch, MA-GP (k = 2, p = 6), DAMSM × 0.05</dd>
+              <dt>Optimiser</dt><dd>Adam, G 1e-4 / D 4e-4, β = (0, 0.9)</dd>
+              <dt>Batch / epochs</dt><dd>24 / 600; epoch 555 is the reported model</dd>
+            </dl>
+          </div>
+          <div class="card">
+            <h3>Loaded model</h3>
+            <dl class="kv" id="modelCard"><dt>Status</dt><dd>Loading…</dd></dl>
+          </div>
+        </div>
+
+        <h2>Text encoders</h2>
+        <div class="about-grid notes">
+          <div class="card">
+            <h3>Caption encoding</h3>
+            <p>The caption is lower-cased and split into words, like the training captions, and BERT’s WordPiece
+              tokenizer reads it. Words that never occur in the CUB captions still get meaningful features, and
+              captions up to 40 word pieces are read whole.</p>
+          </div>
+          <div class="card">
+            <h3>Sentence embedding</h3>
+            <p>The 256-d sentence vector is the mean of BERT’s token states, passed through a projection trained
+              together with a DAMSM image encoder. On real CUB test photos it ranks the right caption first among
+              100 in 16.3% of cases, on par with AttnGAN’s LSTM encoder (16.9%).</p>
+          </div>
+          <div class="card">
+            <h3>SSA-GAN baseline</h3>
+            <p>SSA-GAN reads captions with AttnGAN’s DAMSM LSTM over the 5,450-word CUB vocabulary: unknown words are
+              dropped and only the first 18 words are used. Each model gets the text encoder it was trained with.</p>
+          </div>
+        </div>
+
+        <h2>Evaluation</h2>
+        <p class="lede small" id="evalIntro">CUB test split, 2,933 images, one generated image per test image. Run
+          <span class="mono">evaluation/run_all.sh</span> to fill this table.</p>
+        <div class="table-wrap">
+          <table class="metrics" id="metricsTable">
+            <thead>
+              <tr><th>Model</th><th>Text encoder</th><th class="num">FID (SSA-GAN protocol) ↓</th>
+                <th class="num">FID (bird crops) ↓</th><th class="num">IS ↑</th><th class="num">CLIP score ↑</th>
+                <th class="num">R-precision DAMSM ↑</th><th class="num">R-precision CLIP ↑</th></tr>
+            </thead>
+            <tbody><tr><td colspan="8" class="muted">No evaluation results yet.</td></tr></tbody>
+          </table>
+        </div>
+        <p class="hint">Both FIDs compare Inception-v3 features of the 2,933 generated images with the real test
+          images. <b>SSA-GAN protocol</b> uses the whole test photos, as SSA-GAN’s own evaluation does. On it, the
+          released SSA-GAN scores 15.48 against the 15.61 its paper reports, so this column can be compared with
+          the paper. <b>Bird crops</b> uses the test photos cropped to the bird, like the training images.
+          IS uses StackGAN’s CUB-fine-tuned Inception-v3, the classifier CUB papers use (10 splits); real photos
+          score 22.3. On the papers’ 30k-image protocol, SSA-GAN scores 5.10 ± 0.06 against its reported
+          5.17 ± 0.08. IS ignores the caption. CLIP score is the cosine similarity between an image and its caption
+          (CLIP ViT-B/32); real photos score 0.284. R-precision is how often an image’s own caption ranks first
+          among 100 captions. DAMSM is the standard CUB judge, but models trained with a DAMSM loss (like SSA-GAN)
+          partly optimise for it. CLIP is an independent judge.</p>
+
+        <h2>Language tests</h2>
+        <p class="lede small">Where SSA-GAN’s word-level LSTM is weakest. Same captions and noise for both models;
+          CLIP ViT-B/32 judges, and neither model was trained with it.</p>
+        <div class="table-wrap">
+          <table class="metrics" id="langTable">
+            <thead>
+              <tr><th>Model</th><th class="num">Rare words: caption effect kept ↑</th>
+                <th class="num">Rare words: CLIP R-precision, original → rare ↑</th>
+                <th class="num">Long captions: CLIP score of the words after the 18th ↑</th>
+                <th class="num">Long captions: R-precision on those words ↑</th></tr>
+            </thead>
+            <tbody><tr><td colspan="5" class="muted">No language tests yet (evaluation/language_tests.py).</td></tr></tbody>
+          </table>
+        </div>
+        <p class="hint"><b>Rare words:</b> colour and size words are replaced by synonyms that SSA-GAN’s training
+          captions contain at most twice (red → vermilion, white → alabaster, large → sizable, …), and each image is
+          scored against the original caption. “Kept” is the share of the caption’s effect that survives:
+          (rare − random caption) / (original − random caption). <b>Long captions:</b> test captions longer than
+          18 words. SSA-GAN reads only the first 18 words; BLM-SGAN’s BERT reads the whole caption. Each image is scored
+          against the words after the 18th; chance R-precision is 1%.</p>
+
+        <h2>On the papers’ FID scale</h2>
+        <p class="lede small">DF-GAN, GALIP and TIGER compute FID their own way. This table uses that protocol, so
+          these numbers sit directly in their tables.</p>
+        <div class="table-wrap">
+          <table class="metrics" id="paperTable">
+            <thead>
+              <tr><th>Model</th><th class="num">FID, DF-GAN protocol ↓</th><th class="num">FID, GALIP protocol ↓</th>
+                <th class="num">Published FID</th></tr>
+            </thead>
+            <tbody><tr><td colspan="4" class="muted">Not measured yet (evaluation/fid_dfgan.py).</td></tr></tbody>
+          </table>
+        </div>
+        <p class="hint">Both protocols use torchvision’s Inception-v3 with DF-GAN’s input scaling and DF-GAN’s
+          reference statistics (<span class="mono">bird_val256_FIDK0.npz</span>, from the bird crops), and draw one
+          random caption per test image per pass. <b>DF-GAN protocol:</b> 10 passes, noise truncated at 0.88.
+          <b>GALIP protocol:</b> 12 passes, untruncated noise. Our implementation gives DF-GAN’s released model
+          12.07 against the 12.10 in its README. Adma-GAN (8.57) and FG-RAT GAN (8.66) report lower FIDs but use the
+          CUB attributes or species labels and do not state their protocol.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== DETAIL DIALOG ============================== -->
+  <dialog id="detail" aria-labelledby="detailTitle">
+    <div class="detail-inner">
+      <div class="detail-media">
+        <div class="viewer" id="viewer">
+          <img id="dImg" alt="">
+          <img id="dMask" class="mask-layer" alt="" aria-hidden="true">
+        </div>
+        <div class="overlay-ctl">
+          <label class="check"><input type="checkbox" id="ovOn"> Overlay mask</label>
+          <label class="ov-opacity">Opacity <input type="range" id="ovOpacity" min="0" max="1" step="0.05" value="0.6"></label>
+        </div>
+      </div>
+      <div class="detail-side">
+        <div class="detail-head">
+          <div>
+            <p class="eyebrow" id="detailTitle">Generated image</p>
+            <p class="detail-caption" id="dCaption"></p>
+          </div>
+          <button class="icon-btn" id="dClose" aria-label="Close" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <dl class="kv compact">
+          <dt>Seed</dt><dd class="mono" id="dSeed"></dd>
+          <dt>Encoding</dt><dd id="dMode"></dd>
+          <dt>Model</dt><dd id="dModel"></dd>
+          <dt>Noise scale</dt><dd class="mono" id="dScale"></dd>
+        </dl>
+
+        <h3 class="mini-label">Semantic mask evolution</h3>
+        <p class="hint">Bright areas are where the caption changes the image at that layer. Click a stage to overlay it.</p>
+        <div class="mask-strip" id="maskStrip"></div>
+
+        <div class="detail-actions">
+          <a class="primary-btn small" id="dDownload" download>Download PNG</a>
+          <button class="ghost-btn" id="dReuse" type="button">Reuse this seed</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

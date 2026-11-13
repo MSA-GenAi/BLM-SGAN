@@ -1,0 +1,15 @@
+{
+ "tag": "dfgan_released",
+ "model": "dfgan",
+ "ckpt": "D:/MSA/grad project/external/dfgan_bird_model/bird/pretrained/state_epoch_1220.pth",
+ "protocol": "dfgan",
+ "fid": 12.071877677338648,
+ "images": 29330,
+ "passes": 10,
+ "truncation": 0.88,
+ "seed": 100,
+ "caption_words": "random 18-word subset",
+ "inception": "torchvision Inception-v3 IMAGENET1K_V1, DF-GAN input scaling",
+ "reference": "bird_val256_FIDK0.npz (md5 0a014fa5a157ac9ed925c76db142f7de)",
+ "seconds": 890
+}

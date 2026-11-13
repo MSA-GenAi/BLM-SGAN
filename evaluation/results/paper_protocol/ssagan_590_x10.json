@@ -1,0 +1,39 @@
+{
+ "tag": "ssagan_590_x10",
+ "inception_score_cub": [
+  5.104287928558492,
+  0.059354392413191535
+ ],
+ "inception_score_cub_n_images": 29330,
+ "inception_score_cub_protocol": "StackGAN CUB-fine-tuned Inception-v3 (50 classes), 29330 images resized 256->299 (bilinear), 10 splits",
+ "model": "ssagan",
+ "ckpt": "checkpoints/birds/ssagan/netG_590.pth",
+ "encoding": "damsm_lstm",
+ "n_images": 29330,
+ "fid": 11.753803287397062,
+ "r_precision_damsm": [
+  72.23286807537079,
+  0.1141285378391713
+ ],
+ "r_precision_clip": [
+  14.132287949323654,
+  0.06216089539936956
+ ],
+ "kid": [
+  0.0019473365498851214,
+  0.00016605542541519197
+ ],
+ "fd_clip": 0.05937104256184311,
+ "precision": 0.6072280941016025,
+ "recall": 0.6471189907944085,
+ "density": 0.42352540061370614,
+ "coverage": 0.5687009887487214,
+ "clip_score": 0.2904362678527832,
+ "seconds": 1305,
+ "inception_score": [
+  5.525442854633267,
+  0.0833004908758203
+ ],
+ "inception_score_protocol": "ImageNet Inception-v3 (TF 2015-12-05 weights), unbiased logits, 10 splits",
+ "fid_uncropped": 12.889510305276275
+}

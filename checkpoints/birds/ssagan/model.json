@@ -1,0 +1,7 @@
+{
+  "name": "SSA-GAN (baseline)",
+  "kind": "ssagan",
+  "order": 30,
+  "description": "Original SSA-GAN by Liao et al. (CVPR 2022), pretrained weights released by the authors. Uses the AttnGAN DAMSM LSTM text encoder.",
+  "source": "https://github.com/wtliao/text2image (OneDrive fixed/cub/netG_590.pth)"
+}

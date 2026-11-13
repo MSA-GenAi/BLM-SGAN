@@ -1,0 +1,3 @@
+The app and the evaluation read the CUB captions and vocabulary from data/birds/captions.pickle.
+Copy it from training/cub_meta/birds/captions.pickle (the same file), with test/filenames.pickle and
+test/class_info.pickle for the evaluation. To use a file somewhere else, set BLM_VOCAB to its full path.

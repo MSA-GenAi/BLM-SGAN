@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+checkpoints/**/*.pth
+checkpoints/.cache/
+data/birds/*
+!data/birds/PUT_captions.pickle_HERE.txt
+pretrained/
+outputs/
+DAMSMencoders/**/*.pth
+evaluation/cache/
+deploy/_bundle/

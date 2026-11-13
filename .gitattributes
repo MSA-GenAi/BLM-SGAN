@@ -1,0 +1,7 @@
+# keep shell scripts runnable on Linux and in Git Bash
+*.sh text eol=lf
+# the Docker build files go to Linux servers as they are
+deploy/docker/* text eol=lf
+*.pickle binary
+*.pth binary
+*.pt binary

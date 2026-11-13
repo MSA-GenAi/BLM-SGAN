@@ -1,0 +1,7 @@
+{
+ "name": "BLM-SGAN",
+ "kind": "blm",
+ "order": 5,
+ "description": "Our model: a BERT text encoder trained on bird captions guides an SSA-GAN generator. It reads the whole caption, including words it never saw in training.",
+ "notes": "Epoch 555 of 600 (BERT-DAMSM text encoder, batch 24, no Fourier loss), the best of the last 50 saved epochs. SSA-GAN protocol: FID 15.56 (SSA-GAN 15.48), IS 4.60 on 29,330 images (SSA-GAN 5.10), CLIP R-precision 13.8% (SSA-GAN 15.5%)."
+}

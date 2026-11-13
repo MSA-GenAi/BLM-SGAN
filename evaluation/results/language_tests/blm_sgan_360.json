@@ -1,0 +1,246 @@
+{
+ "tag": "blm_sgan_360",
+ "blm_sgan": "checkpoints/birds/blm_sgan/netG_best.pth",
+ "ssagan": "D:\\MSA\\grad project\\BLM-SGAN-Text-to-Image-Generation\\checkpoints\\birds\\ssagan\\netG_590.pth",
+ "judge": "openai/clip-vit-base-patch32",
+ "rare_words": {
+  "n_captions": 2889,
+  "n_words_replaced": 8355,
+  "max_train_count": 2,
+  "synonyms": {
+   "red": {
+    "synonym": "vermilion",
+    "times_in_ssagan_training": 0,
+    "in_ssagan_vocabulary": false
+   },
+   "blue": {
+    "synonym": "ultramarine",
+    "times_in_ssagan_training": 0,
+    "in_ssagan_vocabulary": false
+   },
+   "yellow": {
+    "synonym": "saffron",
+    "times_in_ssagan_training": 0,
+    "in_ssagan_vocabulary": false
+   },
+   "black": {
+    "synonym": "ebony",
+    "times_in_ssagan_training": 2,
+    "in_ssagan_vocabulary": true
+   },
+   "white": {
+    "synonym": "alabaster",
+    "times_in_ssagan_training": 0,
+    "in_ssagan_vocabulary": false
+   },
+   "brown": {
+    "synonym": "umber",
+    "times_in_ssagan_training": 1,
+    "in_ssagan_vocabulary": true
+   },
+   "orange": {
+    "synonym": "tangerine",
+    "times_in_ssagan_training": 1,
+    "in_ssagan_vocabulary": true
+   },
+   "grey": {
+    "synonym": "ashen",
+    "times_in_ssagan_training": 1,
+    "in_ssagan_vocabulary": true
+   },
+   "gray": {
+    "synonym": "ashen",
+    "times_in_ssagan_training": 1,
+    "in_ssagan_vocabulary": true
+   },
+   "green": {
+    "synonym": "jade",
+    "times_in_ssagan_training": 2,
+    "in_ssagan_vocabulary": true
+   },
+   "small": {
+    "synonym": "diminutive",
+    "times_in_ssagan_training": 1,
+    "in_ssagan_vocabulary": true
+   },
+   "large": {
+    "synonym": "sizable",
+    "times_in_ssagan_training": 1,
+    "in_ssagan_vocabulary": true
+   }
+  },
+  "examples": [
+   [
+    "light tan colored bird with a white head and an orange beak",
+    "light tan colored bird with a alabaster head and an tangerine beak"
+   ],
+   [
+    "the bird has a curved black bill and two large brown wingbars",
+    "the bird has a curved ebony bill and two sizable umber wingbars"
+   ],
+   [
+    "this is a solid brown bird with webbed feet and a long slightly hooked bill",
+    "this is a solid umber bird with webbed feet and a long slightly hooked bill"
+   ],
+   [
+    "this large bird is grey with white near its tail and a long bill",
+    "this sizable bird is ashen with alabaster near its tail and a long bill"
+   ],
+   [
+    "the large bird has a black bill crown and nape and long wings that have brown secondaries and black converts together with a brown belly and tail",
+    "the sizable bird has a ebony bill crown and nape and long wings that have umber secondaries and ebony converts together with a umber belly and tail"
+   ]
+  ],
+  "models": {
+   "ssagan": {
+    "clip_score": {
+     "orig": [
+      0.2911476670416551,
+      0.0003669971153129978
+     ],
+     "rare": [
+      0.27128990039399603,
+      0.00040298869725508186
+     ],
+     "rand": [
+      0.26167081787991414,
+      0.0004275940419252192
+     ]
+    },
+    "clip_score_drop": [
+     0.019857766647659068,
+     0.0004405066829654893
+    ],
+    "kept": 0.3263271450785479,
+    "r_precision_clip": {
+     "orig": [
+      14.517133831977844,
+      0.3614475454905127
+     ],
+     "rare": [
+      4.254067204892635,
+      0.24053655189041137
+     ],
+     "rand": [
+      0.8238144777715206,
+      0.1382830385099604
+     ]
+    }
+   },
+   "blm_sgan": {
+    "clip_score": {
+     "orig": [
+      0.29309840996028563,
+      0.00036921415241485513
+     ],
+     "rare": [
+      0.27786494033297027,
+      0.00042923989735455903
+     ],
+     "rand": [
+      0.2637203244209372,
+      0.00043860195681218997
+     ]
+    },
+    "clip_score_drop": [
+     0.01523346962731534,
+     0.00044319125505497015
+    ],
+    "kept": 0.48146870704478245,
+    "r_precision_clip": {
+     "orig": [
+      13.811007440090178,
+      0.20826033597947208
+     ],
+     "rare": [
+      5.891311839222908,
+      0.2644295516627528
+     ],
+     "rand": [
+      0.8376600919291377,
+      0.10127198580522172
+     ]
+    }
+   }
+  }
+ },
+ "long_captions": {
+  "n_captions": 2480,
+  "mean_words": 22.766129032258064,
+  "examples": [
+   [
+    "this bird has a long neck that is grainy and a pastel orange blue narrow beak that droops",
+    "down at the tip"
+   ],
+   [
+    "the wings are brown long and narrow and have white markings on the secondaries the bill is blunt",
+    "tipped and black the head is light brown with a white thin marking between the eye and the beak"
+   ],
+   [
+    "this bird has grey neck head wings and back it has white around its bill and a long",
+    "tall bill that is curved and black at its tip"
+   ],
+   [
+    "bird with fat long beak that is curved at the tip black eye crown nape back inner and",
+    "outer rectrices"
+   ],
+   [
+    "the large bird has a black bill crown and nape and long wings that have brown secondaries and",
+    "black converts together with a brown belly and tail"
+   ]
+  ],
+  "runs": {
+   "ssagan (first 18 words)": {
+    "clip_score_tail": [
+     0.2274272678750417,
+     0.0006554868970656651
+    ],
+    "r_precision_tail": [
+     1.3104838691651821,
+     0.12655125254443236
+    ],
+    "clip_score_full": [
+     0.29040632659509297,
+     0.00041428461285462133
+    ]
+   },
+   "blm_sgan (first 18 words)": {
+    "clip_score_tail": [
+     0.22847197899715074,
+     0.0006500142909803947
+    ],
+    "r_precision_tail": [
+     1.157258078455925,
+     0.09719332061577828
+    ],
+    "clip_score_full": [
+     0.29361987082107416,
+     0.0004159778984984166
+    ]
+   },
+   "blm_sgan (whole caption)": {
+    "clip_score_tail": [
+     0.23368182521493686,
+     0.0006601233660660488
+    ],
+    "r_precision_tail": [
+     2.225806452333927,
+     0.1451612719231211
+    ],
+    "clip_score_full": [
+     0.2947711984777162,
+     0.00039853902181542056
+    ]
+   }
+  },
+  "blm_sgan: whole - first 18 (tail CLIP score)": [
+   0.005209846217786112,
+   0.0002826523296564907
+  ],
+  "blm_sgan whole - ssagan (tail CLIP score)": [
+   0.006254557339895156,
+   0.00038323192958515553
+  ]
+ },
+ "seconds": 42432
+}

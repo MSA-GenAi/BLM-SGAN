@@ -1,0 +1,40 @@
+{
+ "tag": "real_images",
+ "fid_real_half_vs_half": 10.872156540772124,
+ "r_precision_damsm": [
+  16.93487897515297,
+  0.7469871471028413
+ ],
+ "r_precision_clip": [
+  10.514831244945526,
+  0.37541438844385033
+ ],
+ "protocol": "CUB test split, 2,933 images (1 caption each), bbox-cropped real images, pytorch-fid Inception, R-precision top-1 of 100",
+ "inception_score": [
+  5.110041342829865,
+  0.2699414763747
+ ],
+ "inception_score_protocol": "ImageNet Inception-v3 (TF 2015-12-05 weights), unbiased logits, 10 splits",
+ "inception_score_cub": [
+  22.26073545529739,
+  0.3973581268968664
+ ],
+ "inception_score_cub_n_images": 2933,
+ "inception_score_cub_protocol": "StackGAN CUB-fine-tuned Inception-v3 (50 classes), 2933 images resized 256->299 (bilinear), 10 splits",
+ "clip_score": 0.2839243412017822,
+ "half_vs_half": {
+  "kid": [
+   0.0001274061345734534,
+   9.506803075373415e-05
+  ],
+  "fd_clip": 0.013697021628588102,
+  "precision": 0.8049113233287858,
+  "recall": 0.8241308793456033,
+  "density": 0.9654843110504776,
+  "coverage": 0.9679618268575324
+ },
+ "inception_score_cub_3splits": [
+  23.320575312835775,
+  0.10706784048174202
+ ]
+}

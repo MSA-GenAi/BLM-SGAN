@@ -1,0 +1,44 @@
+{
+ "tag": "blm_sgan_460",
+ "label": "BLM-SGAN · epoch 460",
+ "model": "blm",
+ "ckpt": "/content/drive/MyDrive/BLM-SGAN/runs/blm_sgan/models/netG_460.pth",
+ "encoding": "bert_damsm",
+ "n_images": 2933,
+ "fid": 16.058463974987063,
+ "fid_uncropped": 17.352395365152148,
+ "r_precision_damsm": [
+  38.871462643146515,
+  0.5786975837945958
+ ],
+ "r_precision_clip": [
+  12.932151257991793,
+  0.23475952680630247
+ ],
+ "kid": [
+  0.003525494885384681,
+  0.000203087846952736
+ ],
+ "fd_clip": 0.06752931767937576,
+ "precision": 0.5431299011251278,
+ "recall": 0.6362086600750085,
+ "density": 0.3359699965905217,
+ "coverage": 0.4872144561882032,
+ "clip_score": 0.28926077485084534,
+ "seconds": 31,
+ "inception_score_cub": [
+  4.4413263500708045,
+  0.095273250734838
+ ],
+ "inception_score_cub_n_images": 2933,
+ "inception_score_cub_3splits": [
+  4.504933894585464,
+  0.08070348062815685
+ ],
+ "inception_score_cub_protocol": "StackGAN CUB-fine-tuned Inception-v3 (50 classes), 2933 images resized 256->299 (bilinear), 10 splits",
+ "inception_score": [
+  4.9679010792838225,
+  0.15452185791702203
+ ],
+ "inception_score_protocol": "ImageNet Inception-v3 (TF 2015-12-05 weights), unbiased logits, 10 splits"
+}
