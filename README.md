@@ -4,6 +4,9 @@ BLM-SGAN draws a bird from a sentence. A BERT text encoder trained for bird capt
 single-stage GAN generator (SSA-GAN's, with semantic masks) turns noise into a 256×256 image, using the masks to
 decide *where* the text should change the picture. It is trained on CUB-200-2011.
 
+**Live demo: [msa-genai.github.io](https://msa-genai.github.io)** (after a quiet period the first visit takes about a
+minute while the model server starts).
+
 Compared with SSA-GAN, the model it builds on, BLM-SGAN matches its image quality (FID 15.56 vs 15.48) and
 understands captions better. It keeps 47% of a caption's effect when colour and size words are replaced by rare
 synonyms (SSA-GAN: 33%), and it uses the words after the 18th in long captions, which SSA-GAN cannot read.
